@@ -1,0 +1,10 @@
+# deploy to /etc/systemd/system
+[Unit]
+Description=Hello F# service
+
+[Service]
+Type=simple # "real" unix daemons will fork - use "forking"
+User=dave
+ExecStart=/usr/bin/dotnet /home/dave/src/openfs/simpleservice/bin/Debug/netcoreapp2.0/simpleservice.dll
+Restart=always # it will restart however it stops
+RestartSec=20s # if it restarts too fast, systemd will not restart it
