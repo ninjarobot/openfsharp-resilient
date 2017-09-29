@@ -304,4 +304,6 @@ Now when you build images, you're doing it in minikube's registry.
 * Be aware of target runtime differences
 * Join FSharp Software Foundation
 
+[https://github.com/ninjarobot/openfsharp-resilient](https://github.com/ninjarobot/openfsharp-resilient)
+
 *** 
