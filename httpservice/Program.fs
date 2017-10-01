@@ -7,6 +7,8 @@ open Suave.Operators
 open Suave.Successful
 open Suave.Filters
 
+/// Handler for /info - for demo purposes, so we can easily get the PID and a
+/// little other infomation.
 let info =
     use p = System.Diagnostics.Process.GetCurrentProcess ()
     let assemblies = AppDomain.CurrentDomain.GetAssemblies() |> Array.map(fun a -> sprintf "\t%s" a.FullName) |> String.concat "\n"
@@ -14,6 +16,8 @@ let info =
 
 let cts = new CancellationTokenSource ()
 
+/// Don't normally create an endpoint that will kill the service.  This is here
+/// so we can create chaos and demonstrate resiliency.
 let die () = 
     // lsof -i tcp:8080 # shows running socket
     // curl -X POST http://localhost:8080/die
@@ -21,6 +25,9 @@ let die () =
     System.Environment.Exit (0)
     "shutting down"
 
+/// Don't normally create an endpoint that will zombie the service either.
+/// This one kills the Suave listener, but the process still runs, illustrating
+/// the need for an HTTP health check.
 let zombie () = 
     cts.Cancel ()
     "shutting down"
@@ -30,6 +37,8 @@ let rec fib (n:uint32) =
     | 0u | 1u -> n
     | _ -> fib (n-1u) + fib (n-2u)
 
+/// Nice CPU eating service in case we want to show it die in the middle of
+/// processing a request.
 let fibHandler num =
     fun (ctx:HttpContext) ->
         async {
@@ -37,7 +46,6 @@ let fibHandler num =
             return! OK result ctx
         }
         
-
 let app : WebPart = 
     choose [
         path "/healthcheck" >=> GET >=> OK "OK"
