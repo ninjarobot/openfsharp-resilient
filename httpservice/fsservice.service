@@ -1,9 +1,0 @@
-[Unit]
-Description=Example service for Openfsharp!
-
-[Service]
-Type=simple
-User=dave
-ExecStart=/usr/bin/dotnet /home/dave/src/openfs/httpservice/bin/Debug/netcoreapp2.0/httpservice.dll
-Restart=always
-RestartSec=2s
