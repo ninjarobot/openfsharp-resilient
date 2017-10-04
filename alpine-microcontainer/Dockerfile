@@ -1,5 +1,8 @@
+FROM microsoft/dotnet as source
+RUN dotnet new console -lang F# --name hello
+
 FROM fsharp:4.1.25 as builder
-COPY *.fs* /build/
+COPY --from=source hello/*.fs* /build/
 WORKDIR /build
 # Problem with the following since new embedded FSharp SDK
 # RUN msbuild /t:Restore && msbuild /t:Build /p:EnableDefaultCompileItems=false /p:Configuration=Release
